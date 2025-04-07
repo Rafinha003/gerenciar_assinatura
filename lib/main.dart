@@ -1,10 +1,10 @@
-import 'package:controle_assinatura/view/Cadastro.dart';
-import 'package:controle_assinatura/view/Financeiro.dart';
-import 'package:controle_assinatura/view/esqueceuSenha.dart';
+import 'package:controle_assinatura/view/TelaCadastro.dart';
+import 'package:controle_assinatura/view/TelaFinanceiro.dart';
+import 'package:controle_assinatura/view/TelaEsqueceuSenha.dart';
 import 'package:controle_assinatura/view/home.dart';
-import 'package:controle_assinatura/view/login.dart';
-import 'package:controle_assinatura/controller/SubscriptionController.dart';
-import 'package:controle_assinatura/view/sobre.dart';
+import 'package:controle_assinatura/view/Telalogin.dart';
+import 'package:controle_assinatura/controller/AssinaturaController.dart';
+import 'package:controle_assinatura/view/TelaSobre.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SubscriptionController(),
+      create: (_) => Assinaturacontroller(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Controle de Assinatura",
@@ -30,11 +30,11 @@ class MainApp extends StatelessWidget {
         initialRoute: '/tela-login',
         routes: {
           '/tela-login': (context) => LoginScreen(),
-          '/tela-cadastro': (context) => CadastroUsuarioScreen(),
-          '/esqueceu-senha': (context) => EsqueceuSenhaScreen(),
-          '/home': (context) => HomeScreen(),
-          '/financeiro': (context) => FinanceiroScreen(),
-          '/sobre': (context) => SobreScreen(),
+          '/tela-cadastro': (context) => TelaCadastroUsuario(),
+          '/esqueceu-senha': (context) => telaEsqueceuSenha(),
+          '/home': (context) => Home(),
+          '/financeiro': (context) => TelaFinanceiro(),
+          '/sobre': (context) => TelaSobre(),
         },
       ),
     );

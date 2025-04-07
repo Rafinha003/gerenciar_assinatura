@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SobreScreen extends StatelessWidget {
+class TelaSobre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,10 +32,10 @@ class SobreScreen extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
-
             Card(
               elevation: 3,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -58,12 +58,14 @@ class SobreScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'Rafael Martins Nascimento',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 6),
                               Text(
                                 'Engenheiro de software com 21 anos. Atua no desenvolvimento de sites e aplicativos, com conhecimentos em JavaScript, TypeScript, C#, Java, Flutter, Kotlin e Python.',
-                                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.grey[700]),
                               ),
                             ],
                           ),
@@ -79,7 +81,8 @@ class SobreScreen extends StatelessWidget {
                         children: [
                           Text(
                             "📧 Gmail:",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
                           ),
                           Text(
                             "rafael.martins.nascimento03@gmail.com",
@@ -88,7 +91,8 @@ class SobreScreen extends StatelessWidget {
                           SizedBox(height: 8),
                           Text(
                             "🔗 LinkedIn:",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
                           ),
                           Text(
                             "Rafael Martins Nascimento",
@@ -101,12 +105,11 @@ class SobreScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             SizedBox(height: 16),
-
             Card(
               elevation: 3,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -129,19 +132,20 @@ class SobreScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'Matheus Reis',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 6),
                               Text(
                                 'Desenvolvedor Flutter responsável pela estrutura base do app. "Desenvolvedor de sites e aplicativos em php, flutter, c#, java"',
-                                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.grey[700]),
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    
                     SizedBox(height: 12),
                     Divider(),
                     Align(
@@ -149,11 +153,13 @@ class SobreScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("📧 Gmail:", style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text("📧 Gmail:",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           Text("mathreis3110@gmail.com"),
-                            Text(
+                          Text(
                             "🔗  Instagram:",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
                           ),
                           Text(
                             "@_matheus_h_reis",
@@ -162,7 +168,6 @@ class SobreScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    
                   ],
                 ),
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EsqueceuSenhaScreen extends StatelessWidget {
+class telaEsqueceuSenha extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
 
   @override
@@ -15,7 +15,8 @@ class EsqueceuSenhaScreen extends StatelessWidget {
           padding: const EdgeInsets.all(24.0),
           child: Card(
             elevation: 6,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
@@ -40,7 +41,8 @@ class EsqueceuSenhaScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: "E-mail",
                       prefixIcon: Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
                     ),
                   ),
                   SizedBox(height: 24),
@@ -49,7 +51,9 @@ class EsqueceuSenhaScreen extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Instruções enviadas para o e-mail.")),
+                          SnackBar(
+                              content:
+                                  Text("Instruções enviadas para o e-mail.")),
                         );
                       },
                       icon: Icon(Icons.send),
@@ -57,7 +61,8 @@ class EsqueceuSenhaScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 14),
                         textStyle: TextStyle(fontSize: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
                       ),
                     ),
                   ),

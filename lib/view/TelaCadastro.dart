@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CadastroUsuarioScreen extends StatefulWidget {
+class TelaCadastroUsuario extends StatefulWidget {
   @override
-  _CadastroUsuarioScreenState createState() => _CadastroUsuarioScreenState();
+  _TelaCadastroUsuario createState() => _TelaCadastroUsuario();
 }
 
-class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
+class _TelaCadastroUsuario extends State<TelaCadastroUsuario> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -17,7 +17,8 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Usuário cadastrado com sucesso!")),
-      );
+      ) ;
+      Navigator.pushNamed(context, '/tela-login');
     }
   }
 
@@ -34,14 +35,14 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.person_add_alt_1, size: 80, color: Colors.blueAccent),
+                  Icon(Icons.person_add_alt_1,
+                      size: 80, color: Colors.blueAccent),
                   SizedBox(height: 16),
                   Text(
                     "Crie sua conta",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 32),
-
                   TextFormField(
                     controller: _nomeController,
                     decoration: InputDecoration(
@@ -57,7 +58,6 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
                     },
                   ),
                   SizedBox(height: 16),
-
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -74,7 +74,6 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
                     },
                   ),
                   SizedBox(height: 16),
-
                   TextFormField(
                     controller: _telefoneController,
                     keyboardType: TextInputType.phone,
@@ -91,7 +90,6 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
                     },
                   ),
                   SizedBox(height: 16),
-
                   TextFormField(
                     controller: _senhaController,
                     obscureText: true,
@@ -108,7 +106,6 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
                     },
                   ),
                   SizedBox(height: 16),
-
                   TextFormField(
                     controller: _confirmarSenhaController,
                     obscureText: true,
@@ -128,7 +125,6 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
                     },
                   ),
                   SizedBox(height: 30),
-
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -137,7 +133,8 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
                         backgroundColor: Colors.blueAccent,
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: 16),
-                        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        textStyle: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -147,14 +144,14 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen> {
                     ),
                   ),
                   SizedBox(height: 12),
-
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.grey[700],
-                      textStyle: TextStyle(decoration: TextDecoration.underline),
+                      textStyle:
+                          TextStyle(decoration: TextDecoration.underline),
                     ),
                     child: Text("Cancelar"),
                   ),

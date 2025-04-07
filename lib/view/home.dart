@@ -1,88 +1,33 @@
+import 'package:controle_assinatura/funcionalidades/AdicionarAssinatura.dart';
+import 'package:controle_assinatura/funcionalidades/EditarAssinatura.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controller/SubscriptionController.dart';
+import '../controller/AssinaturaController.dart';
 
-class HomeScreen extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<SubscriptionController>(context);
+    final controller = Provider.of<Assinaturacontroller>(context);
 
-    void _showSubscriptionModal({bool isEdit = false, int? index}) {
-      final nameController = TextEditingController(
-        text: isEdit ? controller.subscriptions[index!]["name"] : '',
-      );
-      final valueController = TextEditingController(
-        text: isEdit ? controller.subscriptions[index!]["value"].toString() : '',
-      );
-
+    void _AbrirModalAdicionarAssinatura() {
       showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
+        builder: (_) => AddAssinatura(),
+      );
+    }
+
+    void _AbrirModalEditarAssinatura(int index) {
+      showModalBottomSheet(
+        context: context,
         isScrollControlled: true,
-        builder: (context) {
-          return Padding(
-            padding: EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 24,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  isEdit ? "Editar Assinatura" : "Nova Assinatura",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: "Nome da Assinatura",
-                    prefixIcon: Icon(Icons.subscriptions),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 12),
-                TextField(
-                  controller: valueController,
-                  decoration: InputDecoration(
-                    labelText: "Valor mensal (R\$)",
-                    prefixIcon: Icon(Icons.attach_money),
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final name = nameController.text.trim();
-                      final value = double.tryParse(valueController.text) ?? 0;
-
-                      if (name.isEmpty || value <= 0) return;
-
-                      if (isEdit && index != null) {
-                        controller.editSubscription(index, name, value);
-                      } else {
-                        controller.addSubscription(name, value);
-                      }
-
-                      Navigator.pop(context);
-                    },
-                    child: Text(isEdit ? "Salvar Alterações" : "Salvar"),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 14),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (_) => EditaAssinatura(index: index),
       );
     }
 
@@ -100,7 +45,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: controller.subscriptions.isEmpty
+      body: controller.assinaturas.isEmpty
           ? Center(
               child: Text(
                 "Nenhuma assinatura cadastrada",
@@ -108,9 +53,9 @@ class HomeScreen extends StatelessWidget {
               ),
             )
           : ListView.builder(
-              itemCount: controller.subscriptions.length,
+              itemCount: controller.assinaturas.length,
               itemBuilder: (context, index) {
-                final subscription = controller.subscriptions[index];
+                final subscription = controller.assinaturas[index];
                 return Card(
                   margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: ListTile(
@@ -127,13 +72,13 @@ class HomeScreen extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.blue),
                           onPressed: () {
-                            _showSubscriptionModal(isEdit: true, index: index);
+                            _AbrirModalEditarAssinatura(index);
                           },
                         ),
                         IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
-                            controller.removeSubscription(index);
+                            controller.RemoverAssinatura(index);
                           },
                         ),
                       ],
@@ -143,7 +88,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showSubscriptionModal(),
+        onPressed: _AbrirModalAdicionarAssinatura,
         icon: Icon(Icons.add),
         label: Text("Nova Assinatura"),
       ),

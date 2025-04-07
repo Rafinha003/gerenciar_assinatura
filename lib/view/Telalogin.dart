@@ -38,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 32),
-
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -58,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 SizedBox(height: 20),
-
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
@@ -78,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 SizedBox(height: 30),
-
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -87,7 +84,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor: Colors.blueAccent,
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      textStyle:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -97,7 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
@@ -116,7 +113,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 8),
-
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/esqueceu-senha');
