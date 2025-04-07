@@ -1,15 +1,19 @@
-import 'package:controle_assinatura/controller/SubscriptionController.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../controller/SubscriptionController.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<SubscriptionController>(context);
 
-    void _showAddSubscriptionModal(BuildContext context) {
-      TextEditingController nameController = TextEditingController();
-      TextEditingController valueController = TextEditingController();
+    void _showSubscriptionModal({bool isEdit = false, int? index}) {
+      final nameController = TextEditingController(
+        text: isEdit ? controller.subscriptions[index!]["name"] : '',
+      );
+      final valueController = TextEditingController(
+        text: isEdit ? controller.subscriptions[index!]["value"].toString() : '',
+      );
 
       showModalBottomSheet(
         context: context,
@@ -29,7 +33,7 @@ class HomeScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Nova Assinatura",
+                  isEdit ? "Editar Assinatura" : "Nova Assinatura",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 16),
@@ -45,7 +49,7 @@ class HomeScreen extends StatelessWidget {
                 TextField(
                   controller: valueController,
                   decoration: InputDecoration(
-                    labelText: "Valor (R\$)",
+                    labelText: "Valor mensal (R\$)",
                     prefixIcon: Icon(Icons.attach_money),
                     border: OutlineInputBorder(),
                   ),
@@ -56,13 +60,20 @@ class HomeScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      controller.addSubscription(
-                        nameController.text,
-                        double.tryParse(valueController.text) ?? 0,
-                      );
+                      final name = nameController.text.trim();
+                      final value = double.tryParse(valueController.text) ?? 0;
+
+                      if (name.isEmpty || value <= 0) return;
+
+                      if (isEdit && index != null) {
+                        controller.editSubscription(index, name, value);
+                      } else {
+                        controller.addSubscription(name, value);
+                      }
+
                       Navigator.pop(context);
                     },
-                    child: Text("Salvar"),
+                    child: Text(isEdit ? "Salvar Alterações" : "Salvar"),
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 14),
                     ),
@@ -104,11 +115,11 @@ class HomeScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: ListTile(
                     title: Text(
-                      subscription["name"]!,
+                      subscription["name"],
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
-                      "Valor: R\$ ${subscription["value"].toStringAsFixed(2)}",
+                      "Valor mensal: R\$ ${subscription["value"].toStringAsFixed(2)}",
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -116,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.blue),
                           onPressed: () {
-                            // lógica de edição pode ser implementada aqui
+                            _showSubscriptionModal(isEdit: true, index: index);
                           },
                         ),
                         IconButton(
@@ -132,7 +143,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showAddSubscriptionModal(context),
+        onPressed: () => _showSubscriptionModal(),
         icon: Icon(Icons.add),
         label: Text("Nova Assinatura"),
       ),
