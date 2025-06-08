@@ -1,77 +1,127 @@
+import 'dart:core';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:controle_assinatura/model/Assinatura.Dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class Assinaturacontroller extends ChangeNotifier {
-  List<Map<String, dynamic>> assinaturas = [
-    {"name": "Netflix", "value": 39.90},
-    {"name": "Spotify", "value": 19.90},
-    {"name": "Amazon Prime", "value": 14.90},
-  ];
+  List<Assinatura> _assinaturas = [];
+  List<Assinatura> _assinaturasFiltradas = [];
 
-  final Map<String, Color> _colorMap = {};
+  List<Assinatura> get assinaturas => _assinaturasFiltradas.isEmpty ? _assinaturas : _assinaturasFiltradas;
+  
+  final CollectionReference _colecao = FirebaseFirestore.instance.collection('assinaturas');
+  final String? _usuarioID = FirebaseAuth.instance.currentUser?.uid;
+
+    AssinaturaController() {
+    carregarAssinaturas();
+  }
+
+  Future<void> carregarAssinaturas() async {
+    if (_usuarioID == null) return;
+
+    final snapshot = await _colecao
+        .where('usuarioID', isEqualTo: _usuarioID)
+        .get();
+
+    _assinaturas = snapshot.docs.map((doc) {
+      return Assinatura.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+    }).toList();
+
+    _assinaturasFiltradas.clear(); 
+    notifyListeners();
+  }
+
+    void pesquisarAssinaturas(String termo) {
+    if (termo.isEmpty) {
+      _assinaturasFiltradas.clear();
+    } else {
+      _assinaturasFiltradas = _assinaturas
+          .where((a) => a.nome.toLowerCase().contains(termo.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
+  }
 
   double ObterTotalGasto() {
-    return assinaturas.fold(0, (sum, item) => sum + item["value"]);
+    return _assinaturas.fold(0.0, (sum, item) => sum + item.preco);
   }
 
-  void AdicionarAssinatura(String name, double value) {
-    assinaturas.add({"name": name, "value": value});
+    Future<void> adicionarAssinatura(String nome, double preco, String usuarioID) async {
+    final doc = await _colecao.add({'nome': nome, 'preco': preco, 'usuarioID': usuarioID});
+    _assinaturas.add(Assinatura(id: doc.id, nome: nome, preco: preco, usuarioID: usuarioID));
     notifyListeners();
   }
 
-  void RemoverAssinatura(int index) {
-    assinaturas.removeAt(index);
+  Future<void> removerAssinatura(int index) async {
+    await _colecao.doc(_assinaturas[index].id).delete();
+    _assinaturas.removeAt(index);
     notifyListeners();
   }
 
-  void editSubscription(int index, String name, double value) {
-    assinaturas[index] = {"name": name, "value": value};
+  Future<void> editarAssinatura(int index, String nome, double preco, String usuarioID) async {
+    final id = _assinaturas[index].id;
+    await _colecao.doc(id).update({'nome': nome, 'preco': preco, 'usuarioID': usuarioID});
+    _assinaturas[index] = Assinatura(id: id, nome: nome, preco: preco, usuarioID: usuarioID);
     notifyListeners();
   }
 
-  List<PieChartSectionData> ObterGraficoPizza() {
-    return assinaturas.map((subscription) {
+  List<PieChartSectionData> obterGraficoPizza() {
+    return _assinaturas.map((assinatura) {
       return PieChartSectionData(
-        value: subscription["value"],
-        title: subscription["name"],
-        color: ObterCorGrafico(subscription["name"]),
+        value: assinatura.preco,
+        title: assinatura.nome,
+        color: obterCorGrafico(assinatura.nome),
         radius: 50,
       );
     }).toList();
   }
 
-  List<BarChartGroupData> ObterGraficoBarra() {
-    return List.generate(assinaturas.length, (index) {
-      var subscription = assinaturas[index];
-      return BarChartGroupData(
-        x: index,
-        barRods: [
-          BarChartRodData(
-            toY: subscription["value"],
-            color: Colors.blue,
-            width: 20,
-          ),
-        ],
-      );
-    });
-  }
+    final Map<String, Color> _colorMap = {};
 
-  Color ObterCorGrafico(String name) {
-    if (_colorMap.containsKey(name)) {
-      return _colorMap[name]!;
+
+
+List<BarChartGroupData> obterGraficoBarra() {
+  return List.generate(_assinaturas.length, (index) {
+    final assinatura = _assinaturas[index];
+    return BarChartGroupData(
+      x: index,
+      barRods: [
+        BarChartRodData(
+          toY: assinatura.preco,
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade300, Colors.blue.shade700],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ),
+          width: 22,
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ],
+      showingTooltipIndicators: [0],
+    );
+  });
+}
+
+
+
+  Color obterCorGrafico(String nome) {
+    if (_colorMap.containsKey(nome)) {
+      return _colorMap[nome]!;
     }
 
-    final Random random = Random(name.hashCode);
-    final Color color = Color.fromARGB(
+    final random = Random(nome.hashCode);
+    final color = Color.fromARGB(
       255,
       random.nextInt(200) + 30,
       random.nextInt(200) + 30,
       random.nextInt(200) + 30,
     );
 
-    _colorMap[name] = color;
+    _colorMap[nome] = color;
     return color;
   }
 }

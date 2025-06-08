@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../controller/AssinaturaController.dart';
+
 
 class EditaAssinatura extends StatelessWidget {
   final int index;
@@ -10,11 +12,10 @@ class EditaAssinatura extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<Assinaturacontroller>(context, listen: false);
-    final Valor = controller.assinaturas[index];
-
-    final nameController = TextEditingController(text: Valor["name"]);
-    final valueController =
-        TextEditingController(text: Valor["value"].toString());
+    final assinatura = controller.assinaturas[index];
+    final usuarioID = FirebaseAuth.instance.currentUser?.uid;
+    final nameController = TextEditingController(text: assinatura.nome);
+    final valueController = TextEditingController(text: assinatura.preco.toStringAsFixed(2));
 
     return Padding(
       padding: EdgeInsets.only(
@@ -54,12 +55,12 @@ class EditaAssinatura extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                final name = nameController.text.trim();
-                final value = double.tryParse(valueController.text) ?? 0;
+                final nome = nameController.text.trim();
+                final preco = double.tryParse(valueController.text) ?? 0;
 
-                if (name.isEmpty || value <= 0) return;
+                if (nome.isEmpty || preco <= 0) return;
 
-                controller.editSubscription(index, name, value);
+                controller.editarAssinatura(index, nome, preco, usuarioID ?? "");
                 Navigator.pop(context);
               },
               child: Text("Salvar Alterações"),

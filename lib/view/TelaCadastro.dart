@@ -1,3 +1,4 @@
+import 'package:controle_assinatura/controller/AutenticacaoController.dart';
 import 'package:flutter/material.dart';
 
 class TelaCadastroUsuario extends StatefulWidget {
@@ -13,14 +14,7 @@ class _TelaCadastroUsuario extends State<TelaCadastroUsuario> {
   final TextEditingController _senhaController = TextEditingController();
   final TextEditingController _confirmarSenhaController = TextEditingController();
 
-  void _salvarUsuario() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Usuário cadastrado com sucesso!")),
-      ) ;
-      Navigator.pushNamed(context, '/tela-login');
-    }
-  }
+  AutenticacaoController _autenticacaoController = AutenticacaoController();
 
   @override
   Widget build(BuildContext context) {
@@ -163,4 +157,28 @@ class _TelaCadastroUsuario extends State<TelaCadastroUsuario> {
       ),
     );
   }
+  void _salvarUsuario() {
+  String email = _emailController.text;
+  String senha = _senhaController.text;
+
+  if (_formKey.currentState!.validate()) {
+    _autenticacaoController.cadastrarUsuario(email: email, senha: senha).then((String? erro) {
+      if (erro != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(erro)),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Usuário cadastrado com sucesso!")),
+        );
+        Navigator.pushNamed(context, '/tela-login');
+      }
+    });
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Há um ou mais campos inválidos.")),
+    );
+  }
+}
+
 }

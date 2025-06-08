@@ -1,10 +1,28 @@
+import 'package:controle_assinatura/controller/AutenticacaoController.dart';
 import 'package:flutter/material.dart';
 
 class telaEsqueceuSenha extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
 
+   AutenticacaoController _autenticacaoController = AutenticacaoController();
+
   @override
   Widget build(BuildContext context) {
+
+       btnEnviar() {
+    String email = _emailController.text;
+
+    _autenticacaoController.RecuperarSenha(email: email).then((String? erro) {
+      if (erro != null) {
+         ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(erro)), );
+      } else {
+
+        Navigator.pushNamed(context,  '/tela-login');
+      }
+    });
+  }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Recuperar Senha"),
@@ -55,9 +73,11 @@ class telaEsqueceuSenha extends StatelessWidget {
                               content:
                                   Text("Instruções enviadas para o e-mail.")),
                         );
+                        btnEnviar();
                       },
                       icon: Icon(Icons.send),
                       label: Text("Recuperar Senha"),
+
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 14),
                         textStyle: TextStyle(fontSize: 16),

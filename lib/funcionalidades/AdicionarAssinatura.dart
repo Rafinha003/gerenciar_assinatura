@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../controller/AssinaturaController.dart';
@@ -8,6 +9,7 @@ class AddAssinatura extends StatelessWidget {
     final controller = Provider.of<Assinaturacontroller>(context, listen: false);
     final nameController = TextEditingController();
     final valueController = TextEditingController();
+    final usuarioID = FirebaseAuth.instance.currentUser?.uid;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -50,9 +52,9 @@ class AddAssinatura extends StatelessWidget {
                 final name = nameController.text.trim();
                 final value = double.tryParse(valueController.text) ?? 0;
 
-                if (name.isEmpty || value <= 0) return;
+                if (name.isEmpty || value <= 0 ) return;
 
-                controller.AdicionarAssinatura(name, value);
+                controller.adicionarAssinatura(name, value, usuarioID ?? "");
                 Navigator.pop(context);
               },
               child: Text("Salvar"),

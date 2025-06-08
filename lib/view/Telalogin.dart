@@ -1,6 +1,8 @@
+import 'package:controle_assinatura/controller/AutenticacaoController.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
+  
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -8,16 +10,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _senhaController = TextEditingController();
 
-  void _validateAndLogin() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login bem-sucedido!")),
-      );
-      Navigator.pushNamed(context, '/home');
-    }
-  }
+   AutenticacaoController _autenticacaoController = AutenticacaoController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 20),
                 TextFormField(
-                  controller: _passwordController,
+                  controller: _senhaController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Senha",
@@ -132,4 +128,28 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-}
+  
+  void _validateAndLogin() {
+    String email = _emailController.text;
+    String senha = _senhaController.text;
+
+    if (_formKey.currentState!.validate()) {
+        _autenticacaoController.LogarUsuario(email: email, senha: senha).then((String? erro){
+          if(erro != null){
+             ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(erro)),
+      );
+          } else{
+             ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Seja bem vindo")));
+             Navigator.pushNamed(context, '/home');
+          }
+        });
+      } else{
+           ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Há um ou mais campos inválidos!")),
+      );
+       }
+    }
+  }
+

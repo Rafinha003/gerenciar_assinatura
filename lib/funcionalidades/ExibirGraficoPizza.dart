@@ -17,7 +17,7 @@ class ExibirGraficoPizza extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: PieChart(
             PieChartData(
-              sections: controller.ObterGraficoPizza(),
+              sections: controller.obterGraficoPizza(),
               centerSpaceRadius: 40,
               sectionsSpace: 3,
             ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "898670174538",
+    "project_id": "gerenciador-assinatura",
+    "storage_bucket": "gerenciador-assinatura.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898670174538:android:e5657dd9d35dbe7eb1a1b3",
+        "android_client_info": {
+          "package_name": "com.example.controle_assinatura"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZu8JEZdQQiFQoppcmwoY-dSClNMnUZm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
